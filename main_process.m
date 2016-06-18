@@ -1,4 +1,5 @@
 path(path, 'data');
+path(path, 'functions');
 path(path, 'data/backgrounds');
 path(path, 'data/foregrounds');
 
@@ -7,7 +8,8 @@ path(path, 'data/foregrounds');
 z_neuron_num = [25];
 y_neuron_num = 4;
 input_dim = [18, 18];
-network = dn_create (input_dim, y_neuron_num, z_neuron_num);
+
+dn = dn_create (input_dim, y_neuron_num, z_neuron_num);
 
 % maybe need to initialize some epsilons to guard synapse maintenance
 
@@ -27,6 +29,7 @@ if(training_flag)
         % each area, e.g true_z = [1,2] means that type 1 is at location 2
         % true_z = [3] means that the foreground is at location 3
         [training_image, true_z] = get_image(input_dim, z_neuron_num);
+        
         dn = dn_learn(dn, training_image, true_z);
         
         if (check_splitting(dn))
