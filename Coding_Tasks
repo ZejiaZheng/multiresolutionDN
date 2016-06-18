@@ -7,10 +7,10 @@ Initialization:
 		    			 weight_inhibit, rf_inhibit
 
 Training:
-    ======================
+    =========Wuxiang=============
 	get image, label (1 type 25 locations)  (foreground object 10by10, background 18 by 18)
 	preprocess image, contrast normalization 
-	======================
+	=============================
 	compute Y:
 		for each neuron, compute response (bottom-up, top-down,)
 		for each neuron, lateral excitation (+ excitation)
