@@ -17,5 +17,11 @@ testing_flag  = 1;
 
 training_num = 4000; % traing 4000 images 
 if(training_flag)
-    [training_image, true_pos, true_type] = get_image(input_dim, z_neuron_num);
+    % if numel(z_neuron_num) == 1, then type is always 1
+    % if numel(z_neuron_num) == 2, then DN would have type and location
+    % motors both
+    % get_image need to use figure out the stride of location based on
+    % input_dim
+    [training_image, true_pos, true_type] = get_image(input_dim, z_neuron_num); 
+        
 end
