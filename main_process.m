@@ -35,13 +35,19 @@ if(training_flag)
     end
 end
 
-testing_num = 1000;
 if(testing_flag)
-    type_error = 0;
-    location_error = 0;
+    testing_num = 1000;
+    error = zeros(size(true_z));
     
-    [testing_image, true_z] = get_image(input_dim, z_neuron_num);
-    
-    % z_output is the vector with all maximum index of areas in Z
-    z_output = dn_test(dn, testing_image);
+    for i = 1: testing_num
+        [testing_image, true_z] = get_image(input_dim, z_neuron_num);
+
+        % z_output is the vector with all maximum index of areas in Z
+        z_output = dn_test(dn, testing_image);
+        
+        error = error + (z_output ~= true_z);
+    end
 end
+
+% report error rate
+error/testing_num
