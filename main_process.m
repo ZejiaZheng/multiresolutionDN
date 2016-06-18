@@ -7,7 +7,9 @@ path(path, 'data/foregrounds');
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
 z_neuron_num = [25];
 y_neuron_num = 4;
-input_dim = [18, 18];
+
+% foreground is currently set to be 11 by 11
+input_dim = [19, 19];
 
 dn = dn_create (input_dim, y_neuron_num, z_neuron_num);
 
