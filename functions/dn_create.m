@@ -33,10 +33,10 @@ dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 
 % ==== synapse factors ====
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));
-dn.y.bottom_up_synapse_factor = zeros(size(dn.y.bottom_up_weight));
+dn.y.bottom_up_synapse_factor = ones(size(dn.y.bottom_up_weight));
 
 dn.y.top_down_synapse_diff = zeros(size(dn.y.top_down_weight));
-dn.y.top_down_synapse_factor = zeros(size(dn.y.top_down_weight));
+dn.y.top_down_synapse_factor = ones(size(dn.y.top_down_weight));
 
 dn.y.lateral_synapse_diff = zeros(size(dn.y.lateral_weight));
-dn.y.lateral_syanpse_factor = zeros(size(dn.y.lateral_weight));
+dn.y.lateral_syanpse_factor = ones(size(dn.y.lateral_weight));
