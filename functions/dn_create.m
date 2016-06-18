@@ -16,19 +16,15 @@ dn.z.neuron_num = z_neuron_num;
 % ==== ages and learning flags ====
 % learning stage flag (only used when initialization at the first generation)
 dn.y.lsn_flag = zeros(1,y_neuron_num);
-% firing age
+
 dn.y.firing_age = zeros(1, y_neuron_num);
-% inhibitive firing age
 dn.y.inhibit_age = zeros(1, y_neuron_num);
 
 % ==== weights ====
-% bottom_up_weight
 dn.y.bottom_up_weight = zeros(dn.x.neuron_num, dn.y.neuron_num);
-% top_down_weight
 for i = 1:dn.z.area_num
     dn.y.top_down_weight{i} = zeros(dn.z.neuron_num(i), dn.y.neuron_num);
 end
-% lateral_weight
 dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 
 % ==== synapse factors ====
@@ -40,3 +36,19 @@ dn.y.top_down_synapse_factor = ones(size(dn.y.top_down_weight));
 
 dn.y.lateral_synapse_diff = zeros(size(dn.y.lateral_weight));
 dn.y.lateral_syanpse_factor = ones(size(dn.y.lateral_weight));
+
+
+% ==== z weights ==========
+for i = 1:dn.z.area_num
+    dn.z.bottom_up_weight{i} = zeros(y_neuron_num, z_neuron_num(i));
+    dn.z.firing_age{i} = zeros(z_neuron_num(i));
+end
+
+% ==== responses ==========
+dn.x.response = zeros(1, dn.x.neuron_num);
+dn.y.pre_response = zeros(1, dn.y.neuron_num);
+dn.y.response = zeros(1, dn.y.neuron_num);
+
+for i = 1:dn.z.area_num
+    dn.z.response{i} = zeros(1, dn.z.neuron_num(i));
+end
