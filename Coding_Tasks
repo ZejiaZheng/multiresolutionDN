@@ -1,0 +1,46 @@
+Initialization:
+	create network
+	initialize 4 neurons, weights, rfs
+	neuron: winning age, weight_bottom_up, weight_top_down, weight_lateral
+						 rf_bottom_up,	   rf_top_down	    rf_lateral
+		    inhibitive age, every time neuron not fire, inhib_age+1,
+		    			 weight_inhibit, rf_inhibit
+
+Training:
+    ======================
+	get image, label (1 type 25 locations)  (foreground object 10by10, background 18 by 18)
+	preprocess image, contrast normalization 
+	======================
+	compute Y:
+		for each neuron, compute response (bottom-up, top-down,)
+		for each neuron, lateral excitation (+ excitation)
+		for each neuron, top-k (look at each neuron's inhibition area)
+
+
+	learn:
+		for each Y neuron, 
+			if firing:
+				winning_age ++, weight_bottom_up, weight_top_down, weight_lateral learn
+								rf_.....  learn
+
+			if not firing:
+				inhibtive_age ++, weight_inhibit, rf_inhibit  learn
+
+		for each Z neuron, 
+			if firing:
+				weight_bottom_up learn
+
+	splitting:
+		if 95% Y neurons' winning age > 100, split each Y neuron into 8 neurons
+		each child neuron inherit parent neurons' attribute, but not ages 
+			(set winning_age to 5, inhibitive age to 5)
+
+		Z neuorn renew its bottom-up weight also
+
+
+Testing:
+	get image, label
+	compute Y, (same as before)
+	compute Z,
+	get output(max firing response in Z)
+
