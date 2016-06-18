@@ -1,4 +1,4 @@
-function dn = dn_create(input_dim, y_neuron_num, z_neuron_num)
+function dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num)
 
 % we will use image(:) to reshape the x input into a vec
 dn.x.neuron_num = 1;
@@ -19,6 +19,7 @@ dn.y.lsn_flag = zeros(1,y_neuron_num);
 
 dn.y.firing_age = zeros(1, y_neuron_num);
 dn.y.inhibit_age = zeros(1, y_neuron_num);
+dn.y.top_k = y_top_k;
 
 % ==== weights ====
 dn.y.bottom_up_weight = zeros(dn.x.neuron_num, dn.y.neuron_num);
@@ -26,6 +27,9 @@ for i = 1:dn.z.area_num
     dn.y.top_down_weight{i} = zeros(dn.z.neuron_num(i), dn.y.neuron_num);
 end
 dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
+
+% global inhibit at the beginning
+dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 % ==== synapse factors ====
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));
@@ -35,8 +39,10 @@ dn.y.top_down_synapse_diff = zeros(size(dn.y.top_down_weight));
 dn.y.top_down_synapse_factor = ones(size(dn.y.top_down_weight));
 
 dn.y.lateral_synapse_diff = zeros(size(dn.y.lateral_weight));
-dn.y.lateral_syanpse_factor = ones(size(dn.y.lateral_weight));
+dn.y.lateral_synapse_factor = ones(size(dn.y.lateral_weight));
 
+dn.y.inhibit_synapse_diff = zeros(size(dn.y.inhibit_weight));
+dn.y.inhibit_synapse_factor = ones(size(dn.y.inhibit_weight));
 
 % ==== z weights ==========
 for i = 1:dn.z.area_num
@@ -46,7 +52,17 @@ end
 
 % ==== responses ==========
 dn.x.response = zeros(1, dn.x.neuron_num);
+% pre lateral response is bottom up + top down, used to get lateral
+% pre response is bottom up + top down + lateral
+dn.y.bottom_up_percent = 1/3;
+dn.y.top_down_percent  = 1/3;
+dn.y.lateral_percent   = 1/3;
+dn.y.bottom_up_response = zeros(1, dn.y.neuron_num);
+dn.y.top_down_response = zeros(1, dn.y.neuron_num);
+dn.y.pre_lateral_response = zeros(1, dn.y.neuron_num);
+dn.y.lateral_response = zeros(1, dn.y.neuron_num);
 dn.y.pre_response = zeros(1, dn.y.neuron_num);
+% response is after top k
 dn.y.response = zeros(1, dn.y.neuron_num);
 
 for i = 1:dn.z.area_num
