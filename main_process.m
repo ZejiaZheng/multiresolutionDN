@@ -12,9 +12,12 @@ y_top_k = 1;
 % foreground is currently set to be 11 by 11
 input_dim = [19, 19];
 
-% if this percent of neuron's firing age > threshold, split
+% if this percent of neuron's firing age > threshold, split each neuron
+% into split_num neurons
 split_percent = 95;
 split_threshold = 50;
+split_num = 4;
+split_firing_age = 5; % after splitting, child neurons would have this firing age
 
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 
@@ -40,7 +43,7 @@ if(training_flag)
         dn = dn_learn(dn, training_image, true_z);
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
-            dn = dn_split(dn);
+            dn = dn_split(dn, split_num, split_firing_age);
         end
     end
 end
