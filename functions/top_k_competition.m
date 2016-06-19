@@ -18,7 +18,7 @@ for i = 1: neuron_num
     compare_response = response_input .* curr_mask;   
     compare_response = sort(compare_response, 'descend');
     if (curr_response >= compare_response(top_k));
-        response_output = 1;
+        response_output(i) = 1;
     end
 end
 

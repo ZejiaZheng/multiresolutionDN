@@ -33,12 +33,15 @@ dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 %% ==== synapse factors ====
 dn.y.synapse_flag = 1;
+dn.y.synapse_coefficient = [0.8, 1.2];
 
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));
 dn.y.bottom_up_synapse_factor = ones(size(dn.y.bottom_up_weight));
 
-dn.y.top_down_synapse_diff = zeros(size(dn.y.top_down_weight));
-dn.y.top_down_synapse_factor = ones(size(dn.y.top_down_weight));
+for i = 1:dn.z.area_num
+    dn.y.top_down_synapse_diff{i} = zeros(size(dn.y.top_down_weight{i}));
+    dn.y.top_down_synapse_factor{i} = ones(size(dn.y.top_down_weight{i}));
+end
 
 dn.y.lateral_synapse_diff = zeros(size(dn.y.lateral_weight));
 dn.y.lateral_synapse_factor = ones(size(dn.y.lateral_weight));
@@ -61,7 +64,7 @@ dn.y.top_down_percent  = 1/3;
 dn.y.lateral_percent   = 1/3;
 
 dn.y.bottom_up_response = zeros(1, dn.y.neuron_num);
-dn.y.top_down_response = zeros(1, dn.y.neuron_num);
+dn.y.top_down_response = zeros(dn.z.area_num, dn.y.neuron_num);
 dn.y.pre_lateral_response = zeros(1, dn.y.neuron_num);
 dn.y.lateral_response = zeros(1, dn.y.neuron_num);
 dn.y.pre_response = zeros(1, dn.y.neuron_num);

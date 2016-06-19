@@ -1,6 +1,4 @@
-function [image,type,position]=add_foreground(background,training_type)
- path(path, 'foregrounds');
- 
+function [image,type,position]=add_foreground(background,training_type) 
   type=0; % 01:cat; 02:dog; 03:elephant; 04:pig; 05:truck
   listdata = 'foregrounds_to_use.txt';
   filedata = textread(listdata,'%s','delimiter','\n','whitespace','');

@@ -1,7 +1,4 @@
 function bg=get_background(background_height,background_width)
-  global epsilon_error
-  
-  path(path, 'backgrounds');
   epsilon_error = 1/(256*sqrt(12));
   listData = 'backgrounds_to_use.txt';
   fileData = textread(listData,'%s','delimiter','\n','whitespace','');
