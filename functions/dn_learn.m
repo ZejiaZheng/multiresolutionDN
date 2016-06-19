@@ -31,7 +31,7 @@ dn.y.pre_response = (dn.y.bottom_up_percent + dn.y.top_down_percent) * ...
 
 % top-k competition for each neuron
 dn.y.response = top_k_competition(dn.y.pre_response, dn.y.inhibit_weight, ...
-    dn.y.inhibit_synapse_factor);
+    dn.y.inhibit_synapse_factor, dn.y.top_k);
 
 
 %% hebbian learning and synapse maitenance
