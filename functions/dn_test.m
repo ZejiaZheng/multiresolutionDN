@@ -3,6 +3,7 @@ function z_output = dn_test(dn, test_image)
 dn.x.response = test_image(:);
 
 % TODO: preprocess data
+dn.x.response = preprocess(dn.x.response);
 
 %% compute Y responses
 dn.y.bottom_up_response = compute_response(dn.x.response, ...

@@ -7,6 +7,7 @@ for i = 1:dn.z.area_num
 end
 
 % TODO: preprocess data
+dn.x.response = preprocess(dn.x.response);
 
 %% compute responses
 dn.y.bottom_up_response = compute_response(dn.x.response, ...
