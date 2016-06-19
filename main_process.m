@@ -12,6 +12,10 @@ y_top_k = 1;
 % foreground is currently set to be 11 by 11
 input_dim = [19, 19];
 
+% if this percent of neuron's firing age > threshold, split
+split_percent = 95;
+split_threshold = 50;
+
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 
 % maybe need to initialize some epsilons to guard synapse maintenance
@@ -35,7 +39,7 @@ if(training_flag)
         
         dn = dn_learn(dn, training_image, true_z);
         
-        if (check_splitting(dn))
+        if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
             dn = dn_split(dn);
         end
     end
