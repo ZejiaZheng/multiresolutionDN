@@ -105,7 +105,10 @@ end
 for area_idx = 1: dn.z.area_num
     for i = 1: dn.z.neuron_num(area_idx)
         if dn.z.response{area_idx}(i) == 1
-            
+            lr = get_learning_rate(dn.z.firing_age{area_idx}(i));
+            dn.z.bottom_up_weight{area_idx}(:,i) = (1-lr) * dn.z.bottom_up_weight{area_idx}(:,i)+ ...
+                dn.y.response';
+            dn.z.firing_age{area_idx}(i) = dn.z.firing_age{area_idx}(i)+1;
         end
     end
 end
