@@ -1,0 +1,6 @@
+png
+01_cat
+02_dog
+05_truck
+04_pig
+03_elephant
