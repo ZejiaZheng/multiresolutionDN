@@ -63,18 +63,40 @@ for i = 1: dn.y.neuron_num
         end
         
         % lateral weight and synapse factor
+        % lateral exitation connection only exists within firing neurons
         dn.y.lateral_weight(:, i) = (1-lr) * dn.y.lateral_weight(:, i) + ...
-            lr * dn.y.pre_lateral_response';
+            lr * dn.y.response';
         dn.y.lateral_synapse_diff(:, i) = (1-lr) * dn.y.lateral_synapse_diff(:, i) + ...
-            lr * abs(dn.y.lateral_weight(:, i) - dn.y.pre_lateral_response');
+            lr * abs(dn.y.lateral_weight(:, i) - dn.y.response');
         dn.y.lateral_synapse_factor = get_synapse_factor(...
             dn.y.lateral_synapse_diff(:,i));        
         
         dn.y.firing_age(i) = dn.y.firing_age(i) + 1;
     else if dn.y.lsn_flag(i) == 0  % initialization stage neuron is always updating
+            dn.y.bottom_up_weight(:,i) = dn.x.response';
+            for j = 1:dn.z.area_num
+                dn.y.top_down_weight(:,i) = dn.z.response{j};
+            end
+            dn.y.lateral_weight(:, i) = dn.y.response';
             
         else  % update the inhibitive field and weight if a neuron is not firing
+              % TODO : do we use pre lateral response or final response?
+              % what if all the neurons inside the inhibitive area are
+              % inhibited, current solution: the neuron is only inhibited
+              % by the other neurons within its rf and with a response
+              % higher than its response value              
+            lr = get_learning_rate(dn.y.inhibit_age(i));
+            temp = dn.y.pre_lateral_response .* dn.y.inhibit_synapse_factor;
+            temp = temp > dn.y.pre_lateral_response(i);
             
+            dn.y.inhibit_weight(:, i) = (1-lr) * dn.y.inhibit_weight(:, i) + ...
+                lr * temp';
+            dn.y.inhibit_synapse_diff(:, i) = (1-lr) * dn.y.inhibit_synapse_diff(:, i) + ...
+                lr * abs(dn.y.inhibit_weight(:, i) - temp');
+            dn.y.inhibit_synapse_factor = get_synapse_factor(...
+                dn.y.inhibit_synapse_diff(:, i));
+            
+            dn.y.inhibit_age(i) = dn.y.inhibit_age(i) + 1;
         end
     end
 end
