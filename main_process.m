@@ -23,6 +23,8 @@ dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 
 % maybe need to initialize some epsilons to guard synapse maintenance
 
+% TODO: each connection should have its own age
+
 % create training flag and testing flag
 training_flag = 1;
 testing_flag  = 1;
