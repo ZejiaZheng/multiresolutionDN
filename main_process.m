@@ -29,7 +29,7 @@ dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 training_flag = 1;
 testing_flag  = 1;
 
-training_num = 4000; % traing 4000 images 
+training_num = 1000; % traing 4000 images 
 if(training_flag)
     for i = 1: training_num
         i
@@ -43,6 +43,7 @@ if(training_flag)
         % true_z = [3] means that the foreground is at location 3
         [training_image, true_z] = get_image(input_dim, z_neuron_num);
         
+        dn = dn_learn(dn, training_image, true_z);
         dn = dn_learn(dn, training_image, true_z);
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
