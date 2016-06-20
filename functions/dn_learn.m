@@ -45,11 +45,16 @@ for i = 1: dn.y.neuron_num
         % response to to weight update, namely, do we need to 
         
         % bottom-up weight and synapse factor
+        normed_input = dn.x.response'.* dn.y.bottom_up_synapse_factor(:,i);
+        normed_input = normed_input/ norm(normed_input);
         dn.y.bottom_up_weight(:, i) = (1-lr) * dn.y.bottom_up_weight(:, i) + ...
-            lr * dn.x.response';
+            lr * normed_input;
+        dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) .* ...
+            dn.y.bottom_up_synapse_factor(:, i);
+        dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) / norm(dn.y.bottom_up_weight(:, i));
         
         dn.y.bottom_up_synapse_diff(:,i) = (1-lr) * dn.y.bottom_up_synapse_diff(:, i) + ...
-            lr * abs(dn.y.bottom_up_weight(:, i) - dn.x.response');
+            lr * abs(dn.y.bottom_up_weight(:, i) - normed_input);
         
         if (dn.y.synapse_flag>0 && dn.y.firing_age(i) > dn.y.synapse_age)
             dn.y.bottom_up_synapse_factor(:, i) = get_synapse_factor(...
