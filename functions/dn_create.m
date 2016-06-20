@@ -32,7 +32,7 @@ dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 %% ==== synapse factors ====
-dn.y.synapse_flag = 1;
+dn.y.synapse_flag = 0;
 dn.y.synapse_coefficient = [0.8, 1.2];
 
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));

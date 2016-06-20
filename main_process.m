@@ -6,7 +6,7 @@ path(path, 'data/foregrounds');
 
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
 z_neuron_num = [25];
-y_neuron_num = 4;
+y_neuron_num = 50;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
@@ -16,7 +16,7 @@ input_dim = [19, 19];
 % into split_num neurons
 split_percent = 95;
 split_threshold = 50;
-split_num = 4;
+split_num = 2;
 split_firing_age = 5; % after splitting, child neurons would have this firing age
 
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
