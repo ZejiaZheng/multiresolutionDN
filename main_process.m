@@ -10,7 +10,7 @@ y_neuron_num = 50;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
-input_dim = [19, 19];
+input_dim = [19, 19]; 
 
 % if this percent of neuron's firing age > threshold, split each neuron
 % into split_num neurons
