@@ -15,8 +15,8 @@ neuron_num = numel(response_input);
 for i = 1: neuron_num
     curr_response = response_input(i);
     curr_mask = (inhibit_synapse_factor(:, i) > 0)';
-    response_input(i) = curr_response;
-    compare_response = response_input .* curr_mask;   
+    compare_response = response_input .* curr_mask; 
+    compare_response(i) = curr_response;
     [~, neuron_id] = sort(compare_response, 'descend');
     
     for j = 1:top_k
