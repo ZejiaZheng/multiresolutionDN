@@ -20,6 +20,8 @@ if (firing_age > 5)
     synapse_factor(synapse_diff <= upper_thresh) = 1./ ... 
         (synapse_diff(synapse_diff <= upper_thresh)+1/(256*sqrt(12))) - ...
         1/(upper_thresh +1/(256*sqrt(12)));
-
-    synapse_factor = synapse_factor / sum(synapse_factor);
+    
+    if max(synapse_factor) ~= 0
+        synapse_factor = synapse_factor / max(synapse_factor);
+    end
 end

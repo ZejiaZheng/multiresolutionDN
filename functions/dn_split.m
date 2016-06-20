@@ -7,7 +7,7 @@ y_neuron_num = dn.y.neuron_num * split_num;
 
 new_to_old_index = zeros(1, y_neuron_num);
 for i = 1:dn.y.neuron_num
-    start_ind = (i-1) * split_num;
+    start_ind = (i-1) * split_num + 1;
     end_ind = i * split_num;
     new_to_old_index(start_ind:end_ind) = i;
 end
@@ -28,7 +28,7 @@ for i = 1: new_dn.y.neuron_num
         generate_rand_mutate(size(dn.y.bottom_up_weight(:, j)));
     for z_ind = 1:new_dn.z.area_num
         new_dn.y.top_down_weight{z_ind}(:, i) = dn.y.top_down_weight{z_ind}(:, j) + ...
-            generate_rand_mutate(size(dn.y.top_down_weight{z_ind}(:, i)));
+            generate_rand_mutate(size(dn.y.top_down_weight{z_ind}(:, j)));
     end
     
     % TODO: lateral_weight is more complicated
@@ -42,8 +42,10 @@ for i = 1: new_dn.y.neuron_num
     new_dn.y.bottom_up_synapse_diff(:, i) = dn.y.bottom_up_synapse_diff(:, j);
     new_dn.y.bottom_up_synapse_factor(:,i) = dn.y.bottom_up_synapse_factor(:, j);
     
-    new_dn.y.top_down_synapse_diff(:, i) = dn.y.top_down_synapse_diff(:,j);
-    new_dn.y.top_down_synapse_factor(:, i) = dn.y.top_down_synapse_factor(:,j);
+    for z_ind = 1:new_dn.z.area_num
+        new_dn.y.top_down_synapse_diff{z_ind}(:, i) = dn.y.top_down_synapse_diff{z_ind}(:,j);
+        new_dn.y.top_down_synapse_factor{z_ind}(:, i) = dn.y.top_down_synapse_factor{z_ind}(:,j);
+    end
     
     
     % TODO: check the correctness of this!!
@@ -58,6 +60,6 @@ for i = 1: new_dn.y.neuron_num
         new_dn.z.bottom_up_weight{z_ind}(i, :) = dn.z.bottom_up_weight{z_ind}(j,:);
         
         % z neuron is not strictly new, so we set its age to older
-        new_dn.z.firing_age{i} = ones(z_neuron_num(i)) * split_firing_age * 3;
+        new_dn.z.firing_age{z_ind} = ones(z_neuron_num(z_ind)) * split_firing_age * 3;
     end
 end

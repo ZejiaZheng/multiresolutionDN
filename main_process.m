@@ -32,6 +32,7 @@ testing_flag  = 1;
 training_num = 4000; % traing 4000 images 
 if(training_flag)
     for i = 1: training_num
+        i
         % if numel(z_neuron_num) == 1, then type is always 1
         % if numel(z_neuron_num) == 2, then DN would have type and location
         % motors both
@@ -55,6 +56,7 @@ if(testing_flag)
     error = zeros(size(true_z));
     
     for i = 1: testing_num
+        i
         [testing_image, true_z] = get_image(input_dim, z_neuron_num);
 
         % z_output is the vector with all maximum index of areas in Z
