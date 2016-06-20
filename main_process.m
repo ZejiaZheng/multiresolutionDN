@@ -15,7 +15,7 @@ input_dim = [19, 19];
 % if this percent of neuron's firing age > threshold, split each neuron
 % into split_num neurons
 split_percent = 95;
-split_threshold = 50;
+split_threshold = 40;
 split_num = 2;
 split_firing_age = 5; % after splitting, child neurons would have this firing age
 
@@ -29,7 +29,7 @@ dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 training_flag = 1;
 testing_flag  = 1;
 
-training_num = 1000; % traing 4000 images 
+training_num = 2000; % traing 4000 images 
 if(training_flag)
     for i = 1: training_num
         i
@@ -68,4 +68,4 @@ if(testing_flag)
 end
 
 % report error rate
-error/testing_num
+1 - error/testing_num
