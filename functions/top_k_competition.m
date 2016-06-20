@@ -1,4 +1,4 @@
-function response_output = top_k_competition(response_input, inhibit_weight, ...
+function response_output = top_k_competition(response_input, top_down_response, inhibit_weight, ...
     inhibit_synapse_factor, top_k)
 
 % TODO : there are two ways to do things
@@ -20,9 +20,15 @@ for i = 1: neuron_num
     [~, neuron_id] = sort(compare_response, 'descend');
     
     for j = 1:top_k
-        if neuron_id(j) == i
-           response_output(i) = 1;
-           break;
+        if size(top_down_response, 1) ~= 0
+            if neuron_id(j) == i && top_down_response(i)>0
+               response_output(i) = 1;
+               break;
+            end
+        else if neuron_id(j) == i
+                response_output(i) = 1;
+                break;
+            end
         end
     end
 end

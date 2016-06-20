@@ -24,7 +24,7 @@ dn.y.top_k = y_top_k;
 %% ==== weights ====
 dn.y.bottom_up_weight = ones(dn.x.neuron_num, dn.y.neuron_num);
 for i = 1:dn.z.area_num
-    dn.y.top_down_weight{i} = ones(dn.z.neuron_num(i), dn.y.neuron_num);
+    dn.y.top_down_weight{i} = zeros(dn.z.neuron_num(i), dn.y.neuron_num);
 end
 dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 
