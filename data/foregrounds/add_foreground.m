@@ -4,10 +4,10 @@ function [image,type,position]=add_foreground(background,training_type)
   filedata = textread(listdata,'%s','delimiter','\n','whitespace','');
   format = char(filedata(1));
   nImg = size(filedata, 1) - 1;
-  curr_num = max(2,ceil(rand*nImg));
+  curr_num = 2;
    [img,map,alpha] = imread(strcat('', char(filedata(curr_num)), '.', format),format);
     img = double(img);
-    alpha = double(alpha);
+    alpha = double(alpha > 0);
     
     if(training_type)
         fg = textscan( char(filedata{curr_num}), '%s%s','delimiter', '_');
