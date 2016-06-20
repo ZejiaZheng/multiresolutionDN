@@ -22,9 +22,9 @@ dn.y.inhibit_age = zeros(1, y_neuron_num);
 dn.y.top_k = y_top_k;
 
 %% ==== weights ====
-dn.y.bottom_up_weight = zeros(dn.x.neuron_num, dn.y.neuron_num);
+dn.y.bottom_up_weight = ones(dn.x.neuron_num, dn.y.neuron_num);
 for i = 1:dn.z.area_num
-    dn.y.top_down_weight{i} = zeros(dn.z.neuron_num(i), dn.y.neuron_num);
+    dn.y.top_down_weight{i} = ones(dn.z.neuron_num(i), dn.y.neuron_num);
 end
 dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 
@@ -32,7 +32,10 @@ dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 %% ==== synapse factors ====
-dn.y.synapse_flag = 0;
+dn.y.synapse_flag = 0; % 1: only bottom-up
+                       % 2: bottom-up + top-down
+                       % 3: bottom-up + top-down + lateral
+                       % 4: bottom-up + top-down + lateral + inhibit
 dn.y.synapse_coefficient = [0.8, 1.2];
 dn.y.synapse_age = 5;
 
@@ -60,9 +63,9 @@ end
 dn.x.response = zeros(1, dn.x.neuron_num);
 % pre lateral response is bottom up + top down, used to get lateral
 % pre response is bottom up + top down + lateral
-dn.y.bottom_up_percent = 1/3;
-dn.y.top_down_percent  = 1/3;
-dn.y.lateral_percent   = 1/3;
+dn.y.bottom_up_percent = 1/2;
+dn.y.top_down_percent  = 1/2;
+dn.y.lateral_percent   = 1/2;
 
 dn.y.bottom_up_response = zeros(1, dn.y.neuron_num);
 dn.y.top_down_response = zeros(dn.z.area_num, dn.y.neuron_num);
