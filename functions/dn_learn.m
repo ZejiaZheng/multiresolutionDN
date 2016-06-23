@@ -46,17 +46,18 @@ for i = 1: dn.y.neuron_num
         
         % bottom-up weight and synapse factor
         normed_input = dn.x.response'.* dn.y.bottom_up_synapse_factor(:,i);
-        %normed_input = normed_input/ norm(normed_input);
+        normed_input = normed_input/ norm(normed_input);
+        
         dn.y.bottom_up_weight(:, i) = (1-lr) * dn.y.bottom_up_weight(:, i) + ...
             lr * normed_input;
         dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) .* ...
             dn.y.bottom_up_synapse_factor(:, i);
-        %dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) / norm(dn.y.bottom_up_weight(:, i));
+        dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) / norm(dn.y.bottom_up_weight(:, i));
         
         dn.y.bottom_up_synapse_diff(:,i) = (1-lr) * dn.y.bottom_up_synapse_diff(:, i) + ...
             lr * abs(dn.y.bottom_up_weight(:, i) - normed_input);
         
-        if (dn.y.synapse_flag>0 && dn.y.firing_age(i) > dn.y.synapse_age)
+        if (dn.y.synapse_flag > 0 && dn.y.firing_age(i) > dn.y.synapse_age)
             dn.y.bottom_up_synapse_factor(:, i) = get_synapse_factor(...
                 dn.y.bottom_up_synapse_diff(:,i), dn.y.bottom_up_synapse_factor(:, i), ...
                 dn.y.synapse_coefficient);
@@ -66,6 +67,7 @@ for i = 1: dn.y.neuron_num
         for j = 1:dn.z.area_num
             dn.y.top_down_weight{j}(:, i) = (1-lr) * dn.y.top_down_weight{j}(:, i) + ...
                 lr * dn.z.response{j}';
+            dn.y.top_down_weight{j}(:, i) = dn.y.top_down_weight{j}(:, i) / norm(dn.y.top_down_weight{j}(:, i));
             dn.y.top_down_synapse_diff{j}(:, i)=(1-lr) * dn.y.top_down_synapse_diff{j}(:, i) + ...
                     lr * abs(dn.y.top_down_weight{j}(:, i) - dn.z.response{j}');
             if (dn.y.synapse_flag>1 && dn.y.firing_age(i) > dn.y.synapse_age)                
@@ -80,6 +82,7 @@ for i = 1: dn.y.neuron_num
         % lateral exitation connection only exists within firing neurons
         dn.y.lateral_weight(:, i) = (1-lr) * dn.y.lateral_weight(:, i) + ...
             lr * dn.y.response';
+        dn.y.lateral_weight(:, i) = dn.y.lateral_weight(:, i)/norm(dn.y.lateral_weight(:, i));
         dn.y.lateral_synapse_diff(:, i) = (1-lr) * dn.y.lateral_synapse_diff(:, i) + ...
                 lr * abs(dn.y.lateral_weight(:, i) - dn.y.response');
         if (dn.y.synapse_flag>2 && dn.y.firing_age(i) > dn.y.synapse_age)            
@@ -111,6 +114,7 @@ for i = 1: dn.y.neuron_num
             
             dn.y.inhibit_weight(:, i) = (1-lr) * dn.y.inhibit_weight(:, i) + ...
                 lr * temp(:, i);
+            dn.y.inhibit_weight(:, i) = dn.y.inhibit_weight(:, i) / norm(dn.y.inhibit_weight(:, i));
             dn.y.inhibit_synapse_diff(:, i) = (1-lr) * dn.y.inhibit_synapse_diff(:, i) + ...
                     lr * abs(dn.y.inhibit_weight(:, i) - temp(:, i));
             if (dn.y.synapse_flag>3 && dn.y.firing_age(i) > dn.y.synapse_age)                
