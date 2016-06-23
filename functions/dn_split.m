@@ -18,7 +18,9 @@ new_dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num);
 % now we duplicate the weights
 for i = 1: new_dn.y.neuron_num
     j = new_to_old_index(i);
-    new_dn.y.lsn_flag(i) = dn.y.lsn_flag(j);    
+    %TODO(zejia): Do we inherit initialization flag?
+    %new_dn.y.lsn_flag(i) = dn.y.lsn_flag(j);
+    new_dn.y.lsn_flag(i) = 0;
     new_dn.y.firing_age(i) = split_firing_age;
     new_dn.y.inhibit_age(i) = split_firing_age;
     
