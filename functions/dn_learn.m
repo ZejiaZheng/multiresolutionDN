@@ -31,8 +31,8 @@ dn.y.pre_response = (dn.y.bottom_up_percent + dn.y.top_down_percent) * ...
     dn.y.lateral_response;
 
 % top-k competition for each neuron
-dn.y.response = top_k_competition(dn.y.pre_response, dn.y.top_down_response, dn.y.inhibit_weight, ...
-    dn.y.inhibit_synapse_factor, dn.y.top_k);
+dn.y.response = top_k_competition(dn.y.pre_response, dn.y.top_down_response, dn.y.lsn_flag, dn.y.inhibit_weight, ...
+    dn.y.inhibit_synapse_factor, dn.y.top_k, dn.parent_flag);
 
 
 %% hebbian learning and synapse maitenance
@@ -134,6 +134,7 @@ for area_idx = 1: dn.z.area_num
             lr = get_learning_rate(dn.z.firing_age{area_idx}(i));
             dn.z.bottom_up_weight{area_idx}(:,i) = (1-lr) * dn.z.bottom_up_weight{area_idx}(:,i)+ ...
                 lr * dn.y.response';
+            dn.z.bottom_up_weight{area_idx}(:,i) = dn.z.bottom_up_weight{area_idx}(:,i) / norm(dn.z.bottom_up_weight{area_idx}(:,i));
             dn.z.firing_age{area_idx}(i) = dn.z.firing_age{area_idx}(i)+1;
         end
     end

@@ -1,5 +1,5 @@
-function response_output = top_k_competition(response_input, top_down_response, inhibit_weight, ...
-    inhibit_synapse_factor, top_k)
+function response_output = top_k_competition(response_input, top_down_response, lsn_flag, inhibit_weight, ...
+    inhibit_synapse_factor, top_k, parent_flag)
 
 % TODO : there are two ways to do things
 % 1: if a neuron is within the synapse, then include that neuron in top-k
@@ -31,8 +31,8 @@ for i = 1: neuron_num
     [~, neuron_id] = sort(compare_response, 'descend');
     
     for j = 1:top_k
-        if size(top_down_response, 1) ~= 0
-            if neuron_id(j) == i           
+        if size(top_down_response, 1) ~= 0 && (parent_flag || (top_down_response(i) > 0))
+            if (neuron_id(j) == i)
                response_output(i) = 1;
                break;
             end
