@@ -56,7 +56,7 @@ dn.y.inhibit_synapse_factor = ones(size(dn.y.inhibit_weight));
 %% ==== z weights ==========
 for i = 1:dn.z.area_num
     dn.z.bottom_up_weight{i} = zeros(y_neuron_num, z_neuron_num(i));
-    dn.z.firing_age{i} = zeros(z_neuron_num(i));
+    dn.z.firing_age{i} = zeros(1, z_neuron_num(i));
 end
 
 %% ==== responses ==========
