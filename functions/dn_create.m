@@ -1,4 +1,4 @@
-function dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num, parent_flag)
+function dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num)
 
 % we will use image(:) to reshape the x input into a vec
 dn.x.neuron_num = 1;
@@ -32,7 +32,6 @@ dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 %% ==== synapse factors ====
-dn.parent_flag = parent_flag;
 dn.y.synapse_flag = 0; % 1: only bottom-up
                        % 2: bottom-up + top-down
                        % 3: bottom-up + top-down + lateral
@@ -57,7 +56,7 @@ dn.y.inhibit_synapse_factor = ones(size(dn.y.inhibit_weight));
 %% ==== z weights ==========
 for i = 1:dn.z.area_num
     dn.z.bottom_up_weight{i} = zeros(y_neuron_num, z_neuron_num(i));
-    dn.z.firing_age{i} = zeros(1, z_neuron_num(i));
+    dn.z.firing_age{i} = zeros(z_neuron_num(i));
 end
 
 %% ==== responses ==========

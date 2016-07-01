@@ -1,5 +1,5 @@
-function response_output = top_k_competition(response_input, top_down_response, lsn_flag, inhibit_weight, ...
-    inhibit_synapse_factor, top_k, parent_flag)
+function response_output = top_k_competition(response_input, top_down_response, inhibit_weight, ...
+    inhibit_synapse_factor, top_k)
 
 % TODO : there are two ways to do things
 % 1: if a neuron is within the synapse, then include that neuron in top-k
@@ -12,17 +12,6 @@ function response_output = top_k_competition(response_input, top_down_response, 
 response_output = zeros(size(response_input));
 neuron_num = numel(response_input);
 
-% implement random sort so that 1st neuron would not keep firing
-% add random noise to response input
-[sorted_response, ~] = sort(response_input);
-diff = (sorted_response(1:end-1) - sorted_response(2:end));
-range = min(abs(diff(diff~=0)));
-if sum(range) == 0 
-    range = 1; 
-end
-random_change = rand(size(response_input)) * range/10;
-response_input= response_input + random_change;
-
 for i = 1: neuron_num
     curr_response = response_input(i);
     curr_mask = (inhibit_synapse_factor(:, i) > 0)';
@@ -31,8 +20,8 @@ for i = 1: neuron_num
     [~, neuron_id] = sort(compare_response, 'descend');
     
     for j = 1:top_k
-        if size(top_down_response, 1) ~= 0 && (parent_flag || (top_down_response(i) > 0))
-            if (neuron_id(j) == i)
+        if size(top_down_response, 1) ~= 0
+            if neuron_id(j) == i && top_down_response(i)>0            
                response_output(i) = 1;
                break;
             end

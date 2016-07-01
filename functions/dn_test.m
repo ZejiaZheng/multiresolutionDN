@@ -21,8 +21,8 @@ dn.y.pre_response = (dn.y.bottom_up_percent * dn.y.pre_lateral_response + ...
     (dn.y.bottom_up_percent + dn.y.lateral_percent);
 
 % top-k competition for each neuron
-dn.y.response = top_k_competition(dn.y.pre_response, [], dn.y.lsn_flag, dn.y.inhibit_weight, ...
-    dn.y.inhibit_synapse_factor, dn.y.top_k, dn.parent_flag);
+dn.y.response = top_k_competition(dn.y.pre_response, [], dn.y.inhibit_weight, ...
+    dn.y.inhibit_synapse_factor, dn.y.top_k);
 
 %% compute Z response
 z_output = zeros(1, dn.z.area_num);
