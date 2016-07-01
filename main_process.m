@@ -14,14 +14,12 @@ input_dim = [19, 19];
 
 % if this percent of neuron's firing age > threshold, split each neuron
 % into split_num neurons
-parent_flag = 1;
 split_percent = 85;
-
 split_threshold = 40;
 split_num = 3;
 split_firing_age = 0; % after splitting, child neurons would have this firing age
 
-dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num, parent_flag);
+dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
 
 % maybe need to initialize some epsilons to guard synapse maintenance
 
@@ -32,7 +30,7 @@ training_flag = 1;
 testing_flag  = 1;
 testing_frequency = 500;
 
-training_num = 4000; % traing 4000 images
+training_num = 5000; % traing 4000 images
 if(training_flag)
     for i = 1: training_num
         % if numel(z_neuron_num) == 1, then type is always 1
@@ -44,16 +42,14 @@ if(training_flag)
         % each area, e.g true_z = [1,2] means that type 1 is at location 2
         % true_z = [3] means that the foreground is at location 3
         [training_image, true_z] = get_image(input_dim, z_neuron_num);
-        z_output = dn_test(dn, training_image);
-        if (sum(z_output ~= true_z) > 0 )        
-            dn = dn_learn(dn, training_image, true_z);
-        end
+        
+        dn = dn_learn(dn, training_image, true_z);
         %dn = dn_learn(dn, training_image, true_z);
         
         % test performance every testing_frequency samples
         if mod(i, testing_frequency)==0
             testing_num = 500;
-            error = zeros(size(true_z));   
+            error = zeros(size(true_z));            
             for j = 1: testing_num
                 [testing_image, true_z] = get_image(input_dim, z_neuron_num);
                 
@@ -68,8 +64,7 @@ if(training_flag)
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
             disp('splitting');
-            parent_flag = 0;
-            dn = dn_split(dn, split_num, split_firing_age, parent_flag);
+            dn = dn_split(dn, split_num, split_firing_age);
         end
     end
 end
