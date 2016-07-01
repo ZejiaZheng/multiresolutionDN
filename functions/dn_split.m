@@ -1,4 +1,4 @@
-function new_dn = dn_split(dn, split_num, split_firing_age)
+function new_dn = dn_split(dn, split_num, split_firing_age, parent_flag)
 
 input_dim = dn.x.neuron_num;
 y_top_k = dn.y.top_k;
@@ -13,24 +13,26 @@ for i = 1:dn.y.neuron_num
 end
 
 % we first create a brand new dn with the neurons
-new_dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num);
+new_dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num, parent_flag);
 
 % now we duplicate the weights
 for i = 1: new_dn.y.neuron_num
     j = new_to_old_index(i);
     %TODO(zejia): Do we inherit initialization flag?
     %new_dn.y.lsn_flag(i) = dn.y.lsn_flag(j);
-    new_dn.y.lsn_flag(i) = 0;
+    new_dn.y.lsn_flag(i) = dn.y.lsn_flag(j);
     new_dn.y.firing_age(i) = split_firing_age;
     new_dn.y.inhibit_age(i) = split_firing_age;
     
     % introduce some small change to the weight inherited so that the
     % resposne would be slightly different across neurons
-    new_dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, j) + ...
-        generate_rand_mutate(size(dn.y.bottom_up_weight(:, j)));
+    new_dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, j) .* ...
+        (1+generate_rand_mutate(size(dn.y.bottom_up_weight(:, j))));
+    new_dn.y.bottom_up_weight(:, i) = new_dn.y.bottom_up_weight(:, i)/norm(new_dn.y.bottom_up_weight(:, i));
     for z_ind = 1:new_dn.z.area_num
-        new_dn.y.top_down_weight{z_ind}(:, i) = dn.y.top_down_weight{z_ind}(:, j) + ...
-            generate_rand_mutate(size(dn.y.top_down_weight{z_ind}(:, j)));
+        new_dn.y.top_down_weight{z_ind}(:, i) = dn.y.top_down_weight{z_ind}(:, j) .* ...
+            (1+generate_rand_mutate(size(dn.y.top_down_weight{z_ind}(:, j))));
+        new_dn.y.top_down_weight{z_ind}(:, i) = new_dn.y.top_down_weight{z_ind}(:, i)/norm(new_dn.y.top_down_weight{z_ind}(:, i));
     end
     
     % TODO: lateral_weight is more complicated
@@ -59,9 +61,10 @@ for i = 1: new_dn.y.neuron_num
     
     % Z weights
     for z_ind = 1:new_dn.z.area_num
-        new_dn.z.bottom_up_weight{z_ind}(i, :) = dn.z.bottom_up_weight{z_ind}(j,:);
-        
-        % z neuron is not strictly new, so we set its age to older
-        new_dn.z.firing_age{z_ind} = ones(z_neuron_num(z_ind)) * split_firing_age * 3;
+        new_dn.z.bottom_up_weight{z_ind}(i, :) = dn.z.bottom_up_weight{z_ind}(j,:);        
     end
+end
+
+for z_ind = 1:new_dn.z.area_num
+    new_dn.z.firing_age{z_ind} = split_firing_age * ones(size(new_dn.z.firing_age{z_ind}));
 end
