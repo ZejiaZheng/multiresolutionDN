@@ -16,7 +16,7 @@ input_dim = [19, 19];
 % into split_num neurons
 split_percent = 85;
 split_threshold = 40;
-split_num = 4;
+split_num = 3;
 split_firing_age = 0; % after splitting, child neurons would have this firing age
 
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num);
