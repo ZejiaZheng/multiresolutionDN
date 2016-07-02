@@ -30,7 +30,7 @@ training_flag = 1;
 testing_flag  = 1;
 testing_frequency = 500;
 
-training_num = 5000; % traing 4000 images
+training_num = 5000; % traing 5000 images
 if(training_flag)
     for i = 1: training_num
         % if numel(z_neuron_num) == 1, then type is always 1
