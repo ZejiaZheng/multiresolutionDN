@@ -3,8 +3,9 @@ function [image,type,position]=add_foreground(background,training_type)
 listdata = 'foregrounds_to_use.txt';
 filedata = textread(listdata,'%s','delimiter','\n','whitespace','');
 format = char(filedata(1));
-type = ceil(rand() * training_type)+1;
-[img,~,alpha] = imread(strcat('', char(filedata(type)), '.', format),format);
+curr_num = ceil(rand() * training_type)+1;
+type = curr_num-1;
+[img,~,alpha] = imread(strcat('', char(filedata(curr_num)), '.', format),format);
 img = double(img);
 alpha = double(alpha > 0);
 

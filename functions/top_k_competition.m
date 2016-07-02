@@ -11,6 +11,10 @@ function response_output = top_k_competition(response_input, top_down_response, 
 
 response_output = zeros(size(response_input));
 neuron_num = numel(response_input);
+top_down_flag = ones(1, neuron_num);
+for i = 1: size(top_down_response, 1)
+    top_down_flag = top_down_flag .* top_down_response(i, :);
+end
 
 for i = 1: neuron_num
     curr_response = response_input(i);
@@ -21,7 +25,7 @@ for i = 1: neuron_num
     
     for j = 1:top_k
         if size(top_down_response, 1) ~= 0
-            if neuron_id(j) == i && top_down_response(i)>0            
+            if neuron_id(j) == i && top_down_flag(i)>0            
                response_output(i) = 1;
                break;
             end
