@@ -28,9 +28,13 @@ for i = 1: new_dn.y.neuron_num
     % resposne would be slightly different across neurons
     new_dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, j) + ...
         generate_rand_mutate(size(dn.y.bottom_up_weight(:, j)));
+    new_dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, j)/...
+        max(new_dn.y.bottom_up_weight(:, j));
     for z_ind = 1:new_dn.z.area_num
         new_dn.y.top_down_weight{z_ind}(:, i) = dn.y.top_down_weight{z_ind}(:, j) + ...
             generate_rand_mutate(size(dn.y.top_down_weight{z_ind}(:, j)));
+        new_dn.y.top_down_weight{z_ind}(:, i) = new_dn.y.top_down_weight{z_ind}(:, i)/...
+            max(new_dn.y.top_down_weight{z_ind}(:, i));
     end
     
     % TODO: lateral_weight is more complicated
@@ -39,6 +43,9 @@ for i = 1: new_dn.y.neuron_num
     
     new_dn.y.inhibit_weight(:, i) = dn.y.inhibit_weight(new_to_old_index,j) + ...
         generate_rand_mutate(size(dn.y.inhibit_weight(new_to_old_index,j)));
+    
+    new_dn.y.inhibit_weight(:, i) = new_dn.y.inhibit_weight(:, i) ./ ...
+        max(new_dn.y.inhibit_weight(:, i));
     
     % synapse factors currently do not subject to random changes
     new_dn.y.bottom_up_synapse_diff(:, i) = dn.y.bottom_up_synapse_diff(:, j);
