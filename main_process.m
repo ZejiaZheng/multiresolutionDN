@@ -5,8 +5,8 @@ path(path, 'data/foregrounds');
 
 
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
-z_neuron_num = [2, 25];
-y_neuron_num = 100;
+z_neuron_num = [5, 25];
+y_neuron_num = 200;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
@@ -62,10 +62,10 @@ if(training_flag)
             1 - error/testing_num
         end
         
-        if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
-            disp('splitting');
-            dn = dn_split(dn, split_num, split_firing_age);
-        end
+%         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
+%             disp('splitting');
+%             dn = dn_split(dn, split_num, split_firing_age);
+%         end
     end
 end
 
