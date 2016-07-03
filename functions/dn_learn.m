@@ -90,11 +90,46 @@ for i = 1: dn.y.neuron_num
         
         dn.y.firing_age(i) = dn.y.firing_age(i) + 1;
     else if dn.y.lsn_flag(i) == 0  % initialization stage neuron is always updating
-            dn.y.bottom_up_weight(:,i) = dn.x.response';
-            for j = 1:dn.z.area_num
-                dn.y.top_down_weight{j}(:,i) = dn.z.response{j};
+            lr = get_learning_rate(dn.y.firing_age(i)); % learning rate
+            normed_input = dn.x.response'.* dn.y.bottom_up_synapse_factor(:,i);
+            dn.y.bottom_up_weight(:, i) = (1-lr) * dn.y.bottom_up_weight(:, i) + ...
+                lr * normed_input;
+            dn.y.bottom_up_weight(:, i) = dn.y.bottom_up_weight(:, i) .* ...
+                dn.y.bottom_up_synapse_factor(:, i);
+            dn.y.bottom_up_synapse_diff(:,i) = (1-lr) * dn.y.bottom_up_synapse_diff(:, i) + ...
+            lr * abs(dn.y.bottom_up_weight(:, i) - normed_input);
+        
+            if (dn.y.synapse_flag>0 && dn.y.firing_age(i) > dn.y.synapse_age)
+                dn.y.bottom_up_synapse_factor(:, i) = get_synapse_factor(...
+                    dn.y.bottom_up_synapse_diff(:,i), dn.y.bottom_up_synapse_factor(:, i), ...
+                    dn.y.synapse_coefficient);
             end
-            dn.y.lateral_weight(:, i) = dn.y.response';
+
+            % top-down weight and synapse factor
+            for j = 1:dn.z.area_num
+                dn.y.top_down_weight{j}(:, i) = (1-lr) * dn.y.top_down_weight{j}(:, i) + ...
+                    lr * dn.z.response{j}';
+                dn.y.top_down_synapse_diff{j}(:, i)=(1-lr) * dn.y.top_down_synapse_diff{j}(:, i) + ...
+                        lr * abs(dn.y.top_down_weight{j}(:, i) - dn.z.response{j}');
+                if (dn.y.synapse_flag>1 && dn.y.firing_age(i) > dn.y.synapse_age)                
+                    dn.y.top_down_synapse_factor{j}(:, i) = get_synapse_factor(...
+                        dn.y.top_down_synapse_diff{j}(:,i), dn.y.top_down_synapse_factor{j}(:,i), ...
+                        dn.y.synapse_coefficient);
+                end
+
+            end
+
+            % lateral weight and synapse factor
+            % lateral exitation connection only exists within firing neurons
+            dn.y.lateral_weight(:, i) = (1-lr) * dn.y.lateral_weight(:, i) + ...
+                lr * dn.y.response';
+            dn.y.lateral_synapse_diff(:, i) = (1-lr) * dn.y.lateral_synapse_diff(:, i) + ...
+                    lr * abs(dn.y.lateral_weight(:, i) - dn.y.response');
+            if (dn.y.synapse_flag>2 && dn.y.firing_age(i) > dn.y.synapse_age)            
+                dn.y.lateral_synapse_factor(:, i) = get_synapse_factor(...
+                    dn.y.lateral_synapse_diff(:,i), dn.y.lateral_synapse_factor(:, i), ...
+                    dn.y.synapse_coefficient);        
+            end
             
         else  % update the inhibitive field and weight if a neuron is not firing
               % TODO : do we use pre lateral response or final response?
