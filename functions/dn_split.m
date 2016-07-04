@@ -67,8 +67,9 @@ for i = 1: new_dn.y.neuron_num
     % Z weights
     for z_ind = 1:new_dn.z.area_num
         new_dn.z.bottom_up_weight{z_ind}(i, :) = dn.z.bottom_up_weight{z_ind}(j,:);
-        
-        % z neuron is not strictly new, so we set its age to older
-        new_dn.z.firing_age{z_ind} = ones(z_neuron_num(z_ind)) * split_firing_age * 3;
     end
+end
+
+for z_ind = 1:new_dn.z.area_num
+    new_dn.z.firing_age{z_ind} = zeros(size(dn.z.firing_age{z_ind}));
 end
