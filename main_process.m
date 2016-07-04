@@ -63,7 +63,7 @@ if(training_flag)
         end
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
-            disp('splitting');
+            disp(sprintf('splitting at %d', i));
             dn = dn_split(dn, split_num, split_firing_age);
         end
     end

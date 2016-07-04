@@ -38,7 +38,10 @@ dn.y.response = top_k_competition(dn.y.pre_response, dn.y.top_down_response, dn.
 %% hebbian learning and synapse maitenance
 for i = 1: dn.y.neuron_num    
     if dn.y.response(i) == 1  % firing neuron, currently set response to 1
-        dn.y.lsn_flag(i) = 1;
+        if dn.y.lsn_flag(i) == 0
+            dn.y.lsn_flag(i) = 1;
+            dn.y.firing_age(i) = 0;
+        end
         lr = get_learning_rate(dn.y.firing_age(i)); % learning rate
         
         % TODO: check if we want to use y_bottom_up input instead of x

@@ -20,7 +20,6 @@ for i = 1: new_dn.y.neuron_num
     j = new_to_old_index(i);
     %TODO(zejia): Do we inherit initialization flag?
     new_dn.y.lsn_flag(i) = dn.y.lsn_flag(j);
-    %new_dn.y.lsn_flag(i) = 0;
     new_dn.y.firing_age(i) = split_firing_age;
     new_dn.y.inhibit_age(i) = split_firing_age;
     
