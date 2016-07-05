@@ -6,7 +6,7 @@ path(path, 'data/foregrounds');
 
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
 z_neuron_num = [25];
-y_neuron_num = 5;
+y_neuron_num = 40;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
@@ -30,7 +30,8 @@ training_flag = 1;
 testing_flag  = 1;
 testing_frequency = 500;
 
-training_num = prod(z_neuron_num) * 200;
+%training_num = prod(z_neuron_num) * 200;
+training_num = 3000;
 if(training_flag)
     for i = 1: training_num
         % if numel(z_neuron_num) == 1, then type is always 1
