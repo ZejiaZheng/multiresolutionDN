@@ -49,20 +49,20 @@ for i = 1: new_dn.y.neuron_num
     
     % synapse factors currently do not subject to random changes
     new_dn.y.bottom_up_synapse_diff(:, i) = dn.y.bottom_up_synapse_diff(:, j);
-    new_dn.y.bottom_up_synapse_factor(:,i) = dn.y.bottom_up_synapse_factor(:, j);
+    new_dn.y.bottom_up_synapse_factor(:,i) = ones(size(dn.y.bottom_up_synapse_factor(:, j)));
     
     for z_ind = 1:new_dn.z.area_num
         new_dn.y.top_down_synapse_diff{z_ind}(:, i) = dn.y.top_down_synapse_diff{z_ind}(:,j);
-        new_dn.y.top_down_synapse_factor{z_ind}(:, i) = dn.y.top_down_synapse_factor{z_ind}(:,j);
+        new_dn.y.top_down_synapse_factor{z_ind}(:, i) = ones(size(dn.y.top_down_synapse_factor{z_ind}(:,j)));
     end
     
     
     % TODO: check the correctness of this!!
     new_dn.y.lateral_synapse_diff(:,i) = dn.y.lateral_synapse_diff(new_to_old_index, j);
-    new_dn.y.lateral_synapse_factor(:,i) = dn.y.lateral_synapse_factor(new_to_old_index,j);
+    new_dn.y.lateral_synapse_factor(:,i) = ones(size(dn.y.lateral_synapse_factor(new_to_old_index,j)));
     
     new_dn.y.inhibit_synapse_diff(:,i) = dn.y.inhibit_synapse_diff(new_to_old_index, j);
-    new_dn.y.inhibit_synapse_factor(:,i) = dn.y.inhibit_synapse_factor(new_to_old_index, j);
+    new_dn.y.inhibit_synapse_factor(:,i) = ones(size(dn.y.inhibit_synapse_factor(new_to_old_index, j)));
     
     % Z weights
     for z_ind = 1:new_dn.z.area_num

@@ -14,6 +14,11 @@ upper_thresh = synapse_coefficient(2) * mean_diff;
 
 
 % TODO: added in synapse age!
+% cannot cut synapse too quickly, cut coefficient(3) connections at a time
+% [temp_diff, order] = sort(synapse_diff .* synapse_factor, 'descend');
+% if(temp_diff(order(synapse_coefficient(3)+1)) > upper_thresh)
+%     upper_thresh = temp_diff(order(synapse_coefficient(3)+1));
+% end
 synapse_factor(synapse_diff > upper_thresh) = 0;
 synapse_factor(synapse_diff < lower_thresh) = 1;
 

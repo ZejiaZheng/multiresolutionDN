@@ -36,8 +36,8 @@ dn.y.synapse_flag = 1; % 1: only bottom-up
                        % 2: bottom-up + top-down
                        % 3: bottom-up + top-down + lateral
                        % 4: bottom-up + top-down + lateral + inhibit
-dn.y.synapse_coefficient = [0.8, 1.2];
-dn.y.synapse_age = 15;
+dn.y.synapse_coefficient = [0.8, 1.2, 5];
+dn.y.synapse_age = 20;
 
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));
 dn.y.bottom_up_synapse_factor = ones(size(dn.y.bottom_up_weight));
