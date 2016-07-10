@@ -5,8 +5,8 @@ path(path, 'data/foregrounds');
 
 
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
-z_neuron_num = [25];
-y_neuron_num = 5;
+z_neuron_num = [5, 25];
+y_neuron_num = 25;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
