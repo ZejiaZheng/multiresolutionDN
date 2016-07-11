@@ -1,4 +1,4 @@
-function dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num)
+function dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param)
 
 % we will use image(:) to reshape the x input into a vec
 dn.x.neuron_num = 1;
@@ -32,12 +32,11 @@ dn.y.lateral_weight = zeros(dn.y.neuron_num, dn.y.neuron_num);
 dn.y.inhibit_weight = ones(dn.y.neuron_num, dn.y.neuron_num);
 
 %% ==== synapse factors ====
-dn.y.synapse_flag = 1; % 1: only bottom-up
-                       % 2: bottom-up + top-down
-                       % 3: bottom-up + top-down + lateral
-                       % 4: bottom-up + top-down + lateral + inhibit
-dn.y.synapse_coefficient = [0.8, 1.2, 5];
-dn.y.synapse_age = 20;
+dn.y.synapse_flag = synapse_param(1);
+%dn.y.synapse_coefficient = [0.8, 1.2, 5];
+dn.y.synapse_coefficient = [synapse_param(4), synapse_param(5)];
+dn.y.inhibit_synapse_thresh = synapse_param(2);
+dn.y.synapse_age = synapse_param(3);
 
 dn.y.bottom_up_synapse_diff = zeros(size(dn.y.bottom_up_weight));
 dn.y.bottom_up_synapse_factor = ones(size(dn.y.bottom_up_weight));

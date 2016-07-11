@@ -73,11 +73,6 @@ for i = 1: dn.y.neuron_num
                 lr * dn.z.response{j}';
             dn.y.top_down_synapse_diff{j}(:, i)=(1-lr) * dn.y.top_down_synapse_diff{j}(:, i) + ...
                     lr * abs(dn.y.top_down_weight{j}(:, i) - dn.z.response{j}');
-            if (dn.y.synapse_flag>1 && dn.y.firing_age(i) > dn.y.synapse_age)                
-                dn.y.top_down_synapse_factor{j}(:, i) = get_synapse_factor(...
-                    dn.y.top_down_synapse_diff{j}(:,i), dn.y.top_down_synapse_factor{j}(:,i), ...
-                    dn.y.synapse_coefficient);
-            end
         
         end
         
@@ -153,10 +148,14 @@ for i = 1: dn.y.neuron_num
                 lr * temp(:, i);
             dn.y.inhibit_synapse_diff(:, i) = (1-lr) * dn.y.inhibit_synapse_diff(:, i) + ...
                     lr * abs(dn.y.inhibit_weight(:, i) - temp(:, i));
-            if (dn.y.synapse_flag>3 && dn.y.firing_age(i) > dn.y.synapse_age)                
+            
+            % neuron is always inhibited, thus need to multiply by 20
+            if (dn.y.synapse_flag>1 && dn.y.inhibit_age(i) > dn.y.synapse_age * prod(dn.z.neuron_num))  
                 dn.y.inhibit_synapse_factor(:, i) = get_synapse_factor(...
                     dn.y.inhibit_synapse_diff(:, i), dn.y.inhibit_synapse_factor(:, i), ...
                     dn.y.synapse_coefficient);
+                dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
+                    (dn.y.inhibit_synapse_factor(:, i) > dn.y.inhibit_synapse_thresh);
             end            
             dn.y.inhibit_age(i) = dn.y.inhibit_age(i) + 1;
         end
