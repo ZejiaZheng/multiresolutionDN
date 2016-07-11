@@ -140,7 +140,7 @@ for i = 1: dn.y.neuron_num
             lr = get_learning_rate(dn.y.inhibit_age(i));
             temp = zeros(size(dn.y.inhibit_synapse_factor));
             for j = 1:dn.y.neuron_num
-                temp(:, j) = dn.y.pre_lateral_response' .* dn.y.inhibit_synapse_factor(:,j);
+                temp(:, j) = dn.y.pre_lateral_response';
                 temp(:, j) = temp(:, j) > dn.y.pre_lateral_response(i);
             end
             
