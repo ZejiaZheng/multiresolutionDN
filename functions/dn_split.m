@@ -13,7 +13,13 @@ for i = 1:dn.y.neuron_num
 end
 
 % we first create a brand new dn with the neurons
-new_dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num);
+synapse_flag = dn.y.synapse_flag;
+inhibit_synapse_thresh = dn.y.inhibit_synapse_thresh; % see top_k competition to find out about usage
+synapse_age = dn.y.synapse_age;synapse_lower_percent = dn.y.synapse_coefficient(1);
+synapse_upper_percent = dn.y.synapse_coefficient(2);
+synapse_param = [synapse_flag, inhibit_synapse_thresh, synapse_age, ...
+    synapse_lower_percent, synapse_upper_percent];
+new_dn = dn_create(input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param);
 
 % now we duplicate the weights
 for i = 1: new_dn.y.neuron_num
