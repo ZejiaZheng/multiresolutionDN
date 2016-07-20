@@ -22,7 +22,7 @@ split_firing_age = 0; % after splitting, child neurons would have this firing ag
 % synapse flag : 0 : no synapse maintenance, 1 : only bottom-up, 2 :
 % bottom-up and inhibition
 synapse_flag = 2;
-inhibit_synapse_thresh = 0; % see top_k competition to find out about usage
+inhibit_synapse_thresh = 0.5; % see top_k competition to find out about usage
 synapse_age = 20;
 synapse_lower_percent = 0.8;
 synapse_upper_percent = 1.2;
