@@ -152,7 +152,7 @@ for i = 1: dn.y.neuron_num
             end
             top_down_flag1 = ones(1, dn.y.neuron_num);
              for k = 1: size(dn.y.top_down_response, 1)
-                  top_down_flag1 = top_down_flag1 .* top_down_response(k, :);
+                  top_down_flag1 = top_down_flag1 .* dn.y.top_down_response(k, :);
              end
             
             
