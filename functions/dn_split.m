@@ -68,7 +68,7 @@ for i = 1: new_dn.y.neuron_num
     new_dn.y.lateral_synapse_factor(:,i) = ones(size(dn.y.lateral_synapse_factor(new_to_old_index,j)));
     
     new_dn.y.inhibit_synapse_diff(:,i) = dn.y.inhibit_synapse_diff(new_to_old_index, j);
-    new_dn.y.inhibit_synapse_factor(:,i) = ones(size(dn.y.inhibit_synapse_factor(new_to_old_index, j)));
+     new_dn.y.inhibit_synapse_factor(:,i) = dn.y.inhibit_synapse_factor(new_to_old_index, j);
     
     % Z weights
     for z_ind = 1:new_dn.z.area_num
