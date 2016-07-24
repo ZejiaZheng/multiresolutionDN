@@ -26,11 +26,11 @@ for i = 1: neuron_num
     for j = 1:top_k
         if size(top_down_response, 1) ~= 0
             if neuron_id(j) == i && top_down_flag(i)>0            
-               response_output(i) = 1;
+               response_output(i) = response_input(i);
                break;
             end
         else if neuron_id(j) == i
-                response_output(i) = 1;
+                response_output(i) = response_input(i);
                 break;
             end
         end
