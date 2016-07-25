@@ -151,7 +151,7 @@ for i = 1: dn.y.neuron_num
                     lr * abs(dn.y.inhibit_weight(:, i) - temp);
             
             % neuron is always inhibited, thus need to multiply by 20
-            if (dn.y.synapse_flag>1 && dn.y.inhibit_age(i) > dn.y.synapse_age * prod(dn.z.neuron_num))  
+            if (dn.y.synapse_flag>1 && dn.y.inhibit_age(i) > dn.y.synapse_age * max(dn.z.neuron_num))  
                 dn.y.inhibit_synapse_factor(:, i) = get_synapse_factor(...
                     dn.y.inhibit_synapse_diff(:, i), dn.y.inhibit_synapse_factor(:, i), ...
                     dn.y.synapse_coefficient);
