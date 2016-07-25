@@ -24,6 +24,12 @@ dn.y.pre_response = (dn.y.bottom_up_percent * dn.y.pre_lateral_response + ...
 dn.y.response = top_k_competition(dn.y.pre_response, [], dn.y.inhibit_weight, ...
     dn.y.inhibit_synapse_factor, dn.y.top_k);
 
+max_response = max(dn.y.response);
+min_response = min(dn.y.response(dn.y.response>0));
+if(max_response > min_response)
+    dn.y.response = (dn.y.response - min_response)/(max_response - min_response);
+end
+
 %% compute Z response
 z_output = zeros(1, dn.z.area_num);
 for i = 1:dn.z.area_num

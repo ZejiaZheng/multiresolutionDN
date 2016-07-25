@@ -62,7 +62,6 @@ if(training_flag)
             error = zeros(size(true_z));            
             for j = 1: testing_num
                 [testing_image, true_z] = get_image(input_dim, z_neuron_num);
-                
                 % z_output is the vector with all maximum index of areas in Z
                 z_output = dn_test(dn, testing_image);
                 
