@@ -143,16 +143,12 @@ for i = 1: dn.y.neuron_num
               % by the other neurons within its rf and with a response
               % higher than its response value              
             lr = get_learning_rate(dn.y.inhibit_age(i));
-            temp = zeros(size(dn.y.inhibit_synapse_factor));
-            for j = 1:dn.y.neuron_num
-                temp(:, j) = dn.y.pre_lateral_response';
-                temp(:, j) = temp(:, j) > dn.y.pre_lateral_response(i);
-            end
-            
+            temp = dn.y.pre_lateral_response' > dn.y.pre_lateral_response(i);
+
             dn.y.inhibit_weight(:, i) = (1-lr) * dn.y.inhibit_weight(:, i) + ...
-                lr * temp(:, i);
+                lr * temp;
             dn.y.inhibit_synapse_diff(:, i) = (1-lr) * dn.y.inhibit_synapse_diff(:, i) + ...
-                    lr * abs(dn.y.inhibit_weight(:, i) - temp(:, i));
+                    lr * abs(dn.y.inhibit_weight(:, i) - temp);
             
             % neuron is always inhibited, thus need to multiply by 20
             if (dn.y.synapse_flag>1 && dn.y.inhibit_age(i) > dn.y.synapse_age * prod(dn.z.neuron_num))  
