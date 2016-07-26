@@ -38,6 +38,7 @@ dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param);
 % create training flag and testing flag
 training_flag = 1;
 testing_flag  = 1;
+cutting_flag = 1;
 testing_frequency = 500;
 
 training_num = prod(z_neuron_num) * 200;
@@ -90,7 +91,29 @@ if(testing_flag)
         
         error = error + (z_output ~= true_z);
     end
+    
+    % report error rate
+    fprintf('before cutting, final performance: ');
+    1 - error/testing_num
 end
 
-% report error rate
-1 - error/testing_num
+if(cutting_flag)
+    dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.4);
+    testing_num = 1000;
+    error = zeros(size(true_z));
+    
+    for i = 1: testing_num
+        [testing_image, true_z] = get_image(input_dim, z_neuron_num);
+        
+        % z_output is the vector with all maximum index of areas in Z
+        z_output = dn_test(dn, testing_image);
+        
+        error = error + (z_output ~= true_z);
+    end
+    
+    % report error rate
+    fprintf('after cutting, final performance: ');
+    1 - error/testing_num    
+end
+
+

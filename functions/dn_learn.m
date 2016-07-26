@@ -147,6 +147,7 @@ for i = 1: dn.y.neuron_num
 
             dn.y.inhibit_weight(:, i) = (1-lr) * dn.y.inhibit_weight(:, i) + ...
                 lr * temp;
+            dn.y.inhibit_weight(i,i) = 1;
             dn.y.inhibit_synapse_diff(:, i) = (1-lr) * dn.y.inhibit_synapse_diff(:, i) + ...
                     lr * abs(dn.y.inhibit_weight(:, i) - temp);
             
