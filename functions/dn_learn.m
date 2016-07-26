@@ -158,6 +158,8 @@ for i = 1: dn.y.neuron_num
                     dn.y.synapse_coefficient);
                 dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
                     (dn.y.inhibit_synapse_factor(:, i) > dn.y.inhibit_synapse_thresh);
+                dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
+                    (dn.y.inhibit_weight(:, i)>0.4);
             end            
             dn.y.inhibit_age(i) = dn.y.inhibit_age(i) + 1;
         end

@@ -27,7 +27,7 @@ synapse_age = 20;
 synapse_lower_percent = 0.8;
 synapse_upper_percent = 1.2;
 synapse_param = [synapse_flag, inhibit_synapse_thresh, synapse_age, ...
-    synapse_lower_percent, synapse_upper_percent];
+    synapse_lower_percent, synapse_upper_percent, cutting_flag];
 
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param);
 
@@ -97,23 +97,23 @@ if(testing_flag)
     1 - error/testing_num
 end
 
-if(cutting_flag)
-    dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.4);
-    testing_num = 1000;
-    error = zeros(size(true_z));
-    
-    for i = 1: testing_num
-        [testing_image, true_z] = get_image(input_dim, z_neuron_num);
-        
-        % z_output is the vector with all maximum index of areas in Z
-        z_output = dn_test(dn, testing_image);
-        
-        error = error + (z_output ~= true_z);
-    end
-    
-    % report error rate
-    fprintf('after cutting, final performance: ');
-    1 - error/testing_num    
+
+dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.4);
+testing_num = 1000;
+error = zeros(size(true_z));
+
+for i = 1: testing_num
+    [testing_image, true_z] = get_image(input_dim, z_neuron_num);
+
+    % z_output is the vector with all maximum index of areas in Z
+    z_output = dn_test(dn, testing_image);
+
+    error = error + (z_output ~= true_z);
 end
+
+% report error rate
+fprintf('after cutting, final performance: ');
+1 - error/testing_num    
+
 
 
