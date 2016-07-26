@@ -1,4 +1,4 @@
-function dn = dn_learn(dn, training_image, true_z)
+function dn = dn_learn(dn, training_image, true_z, cutting_flag)
 
 dn.x.response = training_image(:)';
 for i = 1:dn.z.area_num
@@ -158,8 +158,10 @@ for i = 1: dn.y.neuron_num
                     dn.y.synapse_coefficient);
                 dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
                     (dn.y.inhibit_synapse_factor(:, i) > dn.y.inhibit_synapse_thresh);
-                dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
-                    (dn.y.inhibit_weight(:, i)>0.4);
+                if(cutting_flag)
+                    dn.y.inhibit_synapse_factor(:, i) = dn.y.inhibit_synapse_factor(:, i) .* ...
+                        (dn.y.inhibit_weight(:, i)>0.4);
+                end
             end            
             dn.y.inhibit_age(i) = dn.y.inhibit_age(i) + 1;
         end

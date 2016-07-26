@@ -38,7 +38,7 @@ dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param);
 % create training flag and testing flag
 training_flag = 1;
 testing_flag  = 1;
-cutting_flag = 1;
+cutting_flag = 0;
 testing_frequency = 500;
 
 training_num = prod(z_neuron_num) * 200;
@@ -54,7 +54,7 @@ if(training_flag)
         % true_z = [3] means that the foreground is at location 3
         [training_image, true_z] = get_image(input_dim, z_neuron_num);
         
-        dn = dn_learn(dn, training_image, true_z);
+        dn = dn_learn(dn, training_image, true_z, cutting_flag);
         %dn = dn_learn(dn, training_image, true_z);
         
         % test performance every testing_frequency samples
