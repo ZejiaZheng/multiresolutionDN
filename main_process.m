@@ -5,8 +5,8 @@ path(path, 'data/foregrounds');
 
 
 % z_neuron_num = [5, 25] TM, LM; z_neuron_num = [25] LM only
-z_neuron_num = [2, 25];
-y_neuron_num = 10;
+z_neuron_num = [5, 25];
+y_neuron_num = 25;
 y_top_k = 1;
 
 % foreground is currently set to be 11 by 11
@@ -21,13 +21,13 @@ split_firing_age = 0; % after splitting, child neurons would have this firing ag
 
 % synapse flag : 0 : no synapse maintenance, 1 : only bottom-up, 2 :
 % bottom-up and inhibition
-synapse_flag = 2;
+synapse_flag = 1;
 inhibit_synapse_thresh = 0; % see top_k competition to find out about usage
 synapse_age = 20;
 synapse_lower_percent = 0.8;
 synapse_upper_percent = 1.2;
 synapse_param = [synapse_flag, inhibit_synapse_thresh, synapse_age, ...
-    synapse_lower_percent, synapse_upper_percent, cutting_flag];
+    synapse_lower_percent, synapse_upper_percent];
 
 dn = dn_create (input_dim, y_neuron_num, y_top_k, z_neuron_num, synapse_param);
 
@@ -98,7 +98,7 @@ if(testing_flag)
 end
 
 
-dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.4);
+dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.6*mean(dn.y.inhibit_weight(:)));
 testing_num = 1000;
 error = zeros(size(true_z));
 
