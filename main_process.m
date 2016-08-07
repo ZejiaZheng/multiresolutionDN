@@ -1,5 +1,6 @@
 path(path, 'data');
 path(path, 'functions');
+path(path, 'visualization');
 path(path, 'data/backgrounds');
 path(path, 'data/foregrounds');
 
@@ -73,11 +74,13 @@ if(training_flag)
         end
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
+            generate_2d_location(dn);
             disp(sprintf('splitting at %d', i));
             dn = dn_split(dn, split_num, split_firing_age);
         end
     end
 end
+generate_2d_location(dn);
 
 if(testing_flag)
     testing_num = 1000;
