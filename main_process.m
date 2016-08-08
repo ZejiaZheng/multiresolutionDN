@@ -19,6 +19,7 @@ split_percent = 75;
 split_threshold = 40;
 split_num = 3;
 split_firing_age = 0; % after splitting, child neurons would have this firing age
+split_count = 0;
 
 % synapse flag : 0 : no synapse maintenance, 1 : only bottom-up, 2 :
 % bottom-up and inhibition
@@ -74,13 +75,16 @@ if(training_flag)
         end
         
         if (check_splitting(dn.y.firing_age, split_threshold, split_percent))
-            generate_2d_location(dn);
+            [neuron_x, neuron_y] = generate_2d_location(dn);
+            convert_loc_to_plotly(neuron_x, neuron_y, dn, split_count);
             disp(sprintf('splitting at %d', i));
             dn = dn_split(dn, split_num, split_firing_age);
+            split_count = split_count+1;
         end
     end
 end
-generate_2d_location(dn);
+[neuron_x, neuron_y] = generate_2d_location(dn);
+convert_loc_to_plotly(neuron_x, neuron_y, dn, split_count);
 
 if(testing_flag)
     testing_num = 1000;
