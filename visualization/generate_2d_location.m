@@ -49,7 +49,7 @@ for i = 1:dn.y.neuron_num
     count(zID) = count(zID)+1;
     lr = 1/count(zID);
     pos(zID,1) = lr * neuron_x(i) + (1-lr) * pos(zID,1);
-    pos(zID,2) = lr * neuron_x(i) + (1-lr) * pos(zID,2);
+    pos(zID,2) = lr * neuron_y(i) + (1-lr) * pos(zID,2);
 end
 dest_pos = [center_what; 50*ones(size(center_what))]';
 

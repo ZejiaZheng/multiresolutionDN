@@ -27,7 +27,7 @@ dn.y.response = top_k_competition(dn.y.pre_response, [], dn.y.inhibit_weight, ..
 max_response = max(dn.y.response);
 min_response = min(dn.y.response(dn.y.response>0));
 if(max_response > min_response)
-    dn.y.response = (dn.y.response - min_response)/(max_response - min_response);
+    dn.y.response = (dn.y.response - min_response + 0.01)/(max_response - min_response + 0.01);
 end
 
 %% compute Z response

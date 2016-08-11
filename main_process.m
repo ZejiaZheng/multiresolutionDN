@@ -105,7 +105,7 @@ if(testing_flag)
 end
 
 
-dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.6*mean(dn.y.inhibit_weight(:)));
+dn.y.inhibit_synapse_factor = dn.y.inhibit_synapse_factor .* (dn.y.inhibit_weight>0.8*mean(dn.y.inhibit_weight(:)));
 testing_num = 1000;
 error = zeros(size(true_z));
 
